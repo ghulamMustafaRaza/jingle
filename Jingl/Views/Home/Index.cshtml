@@ -1,0 +1,568 @@
+﻿@model Jingl.General.Model.User.ViewModel.HomeViewModel
+@{
+    ViewData["Title"] = "index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@inject CookieManager.ICookie _httpCookie
+
+@await Html.PartialAsync("~/Views/Shared/_headertop.cshtml")
+@await Html.PartialAsync("~/Views/Shared/_header.cshtml")
+
+
+<div id="box-index">
+    <div class="row">
+        @*<video width="100%" height="500" controls autoplay loop muted id="adVIdeo" style="margin-top:5px;">*@
+        <video width="100%" height="500" autoplay loop muted id="bannerVideo" controlsList="nodownload nofullscreen noremoteplayback">
+            <source src=@ViewBag.Link type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div id="mute" class="btn" style="font-weight:bold"><img src="~/template/img/ic-mute-24.png" id="imgSpeaker" /></div>
+    </div>
+    <div class="container" style="background: #fff;padding-top: 30px;">
+
+        <div class="row mt20 p-b-20  align-items-center">
+            <div class="col-12">
+                <h3>Featured</h3>
+            </div>
+            @{
+
+
+                int y = 0;
+                int z = 0;
+                int k = 0;
+                int maxloop = 8;
+                var talentFeatured = Model.ListTalentCategoryModel.Where(a => a.CategoryId == 25).ToList();
+                foreach (var talent in talentFeatured)
+                {
+                    if (z >= maxloop)
+                    {
+                        break;
+                    }
+
+                   
+                        <div class="col-6 col-lg-6 align-self-center" style="margin-bottom: -20px;">
+                            <div class="exploredetail m-t-10 m-b-40">
+
+                                <div class="video">
+                                    <div class="card-explore-top">
+                                        @*<p>@Model.ListAllVideo.Where(i=>i.TalentId == talent.Id && i.BookCategory ==0).FirstOrDefault().Link</p>*@
+                                        <input type="hidden" class="FileVideoId" id="FileVideoId_@z" value="@talent.FileId" />
+                                        <input type="hidden" class="LinkVideo" id="LinkVideo_@z" value="@talent.Link" />
+                                        <input type="hidden" class="LinkPhoto" id="LinkPhoto_@z" value="@talent.LinkImg" />
+                                        <input type="hidden" class="LinkName" id="LinkName_@z" value="@talent.TalentNm" />
+                                        <input type="hidden" class="ViewCount" id="ViewCount_@z" value="@talent.ViewsCount" />
+                                        <input type="hidden" class="TalentId" id="TalentId_@z" value="@talent.TalentId" />
+                                        <img src="@talent.LinkImg" alt="Alternate Text" width="100%" height="100%" class="thmnail" />
+                                        <a href="#" class="explore-button " data-toggle="modal" id="exploreLink">
+                                            <img src="~/template/img/iconplaywhite.png" alt="Alternate Text" />
+                                        </a>
+
+                                    </div>
+                                </div>
+                                <a href="@Url.Action("TalentDetail", "Talent", new { TalentId = talent.TalentId })">
+                                    <div class="text-talent">
+
+                                        <span class="span-talent">
+                                            <span class="profesi">@talent.Profesion</span>
+                                        </span>
+                                        <h4>@talent.TalentNm</h4>
+                                    </div>
+                                </a>
+
+                            </div>
+                        </div>
+                        z++;
+
+                }
+            }
+
+        </div>
+
+        @{
+            foreach (var data in ViewBag.Categories)
+            {
+                int z1 = 0;
+                //int maxloop1 = 6;
+                var talent = Model.ListTalentCategoryModel.Where(a => a.CategoryId == data.Id).ToList();
+                if (talent.Count > 0)
+                {
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="category-index">
+                                <h3>@data.CategoryNm</h3>
+                                <a href="@Url.Action("OurTalent","Talent", new { CategoryId = @data.Id })">Lihat Semua</a>
+                                @*<a href="@Url.Action("OurTalent","Talent")">See All</a>*@
+                                @*<input type="hidden" class="CategoryContent" id="CategoryContent_@z1" value="@data.Id"/>*@
+                            </div>
+                        </div>
+                        @{
+
+                            <div class="col-12">
+                                <div class="owl-carousel owl-actors owl-theme">
+                                    @{ foreach (var t in talent)
+                                        {
+                                            if (z1 >= maxloop)
+                                            {
+                                                break;
+                                            }
+                                            if (t != null)
+                                            {
+
+                                                
+                                                    <div class="item">
+                                                        <div class="exploredetail m-t-10 m-b-40">
+
+                                                            <div class="video">
+                                                                <div class="card-explore-top">
+                                                                    <input type="hidden" class="FileVideoId" id="FileVideoId_@z" value="@t.FileId" />
+                                                                    <input type="hidden" class="LinkVideo" id="LinkVideo_@z" value="@t.Link" />
+                                                                    <input type="hidden" class="LinkPhoto" id="LinkPhoto_@z" value="@t.LinkImg" />
+                                                                    <input type="hidden" class="LinkName" id="LinkName_@z" value="@t.TalentNm" />
+                                                                    <input type="hidden" class="ViewCount" id="ViewCount_@z" value="@t.ViewsCount" />
+                                                                    <input type="hidden" class="TalentId" id="TalentId_@z" value="@t.TalentId" />
+                                                                    <img src="@t.LinkImg" alt="Alternate Text" width="100%" height="100%" class="thmnail" />
+                                                                    <a href="#" class="explore-button" data-toggle="modal" id="exploreLinkCat">
+                                                                        <img src="~/template/img/iconplaywhite.png" alt="Alternate Text" />
+                                                                    </a>
+
+                                                                </div>
+                                                            </div>
+                                                            <a href="@Url.Action("TalentDetail", "Talent", new { TalentId = @t.TalentId })">
+                                                                <div class="text-talent">
+
+                                                                    <span class="span-talent">
+                                                                        <span class="profesi">@t.Profesion</span>
+                                                                    </span>
+                                                                    <h4>@t.TalentNm</h4>
+                                                                </div>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                    z++;
+                                                    z1++;
+
+
+                                            }
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            }
+        }
+
+    </div>
+</div>
+
+@section scripts
+    {
+    <script type="text/javascript">
+        function preventBack(cookie) { window.history.forward(); }
+        $(document).ready(function () {
+
+            history.pushState(null, null, location.href);
+            window.onpopstate = function () {
+                history.go(1);
+
+            };
+
+            //var referrer = document.referrer;
+
+            var TalentIndex = 0;
+
+            $('#Hire').click(function ()
+            {
+                var IdName = '#talentId_' + TalentIndex + '';
+                var TalentValue = $(IdName).val();
+                window.location.href = "../Booking/Hire?TalentId=" + TalentValue;
+            });
+
+            $('#love').click(function (e) {
+
+                e.preventDefault();
+                var OldTalentIndex = TalentIndex;
+                TalentIndex = TalentIndex + 1;
+                var IdName = '#talentId_' + OldTalentIndex + '';
+
+                var TalentValue = $(IdName).val();
+
+                if (TalentValue == null)
+                {
+                    $.gritter.add({
+                        title: 'Warning!',
+                        text: 'Sorry you dont pick any talent to your Wishlist !'
+                    });
+
+                }
+
+                else
+                {
+
+                    var url = "@Url.Action("AddToWishlist", "Booking")";
+                    var jsonRequest = {
+                        TalentId: TalentValue
+                        };
+
+                $.ajax({
+                    url: url,
+                    //cache: false,
+                    //traditional: true,
+                    type: "POST",
+                    data: { model: jsonRequest},
+                    //contentType: "application/json; charset=utf-8",
+                    //async: false,
+                    beforeSend:
+                        function () {
+                            //$("#spinner").show();
+                        },
+                    success: function (data) {
+
+                        if (data == "OK") {
+                            $.gritter.add({
+                                title: 'Success!',
+                                text: 'Successfully Add To Your Wishlist !'
+                            });
+
+
+                        }
+
+                        else {
+
+                        }
+
+
+
+                    },
+                    error: function (jqXHR, textStatus, errorMessage) {
+                        console.log(errorMessage);
+                    }
+                    });
+                }
+
+
+            });
+
+            $(".explore-button").click(function (e) {
+
+                e.preventDefault();
+                
+                var div_id = $(this).parent().parent().parent().find('.LinkVideo').attr('id');;
+                var div_profil = $(this).parent().parent().parent().find('.LinkPhoto').attr('id');
+                var div_namatalent = $(this).parent().parent().parent().find('.LinkName').attr('id');
+                var div_FileVideoid = $(this).parent().parent().parent().find('.FileVideoId').attr('id');
+                var div_ViewCountid = $(this).parent().parent().parent().find('.ViewCount').attr('id');
+                var div_Talentid = $(this).parent().parent().parent().find('.TalentId').attr('id');
+
+                //var div_id = $("a.exploreLink").parent().parent().find('.LinkVideo').attr('id');
+                //var div_profil = $("a.exploreLink").parent().parent().find('.LinkPhoto').attr('id');
+                //var div_namatalent = $("a.exploreLink").parent().parent().find('.LinkName').attr('id');
+                //var div_FileVideoid = $("a.exploreLink").parent().parent().find('.FileVideoId').attr('id');
+                //var div_ViewCountid = $("a.exploreLink").parent().parent().find('.ViewCount').attr('id');
+                //var div_Talentid = $("a.exploreLink").parent().parent().find('.TalentId').attr('id');
+
+
+                //alert(div_id);
+                var $source = $('#videoplayer');
+                var $profil = $('#modalImg');
+
+                var sources = $("#" + div_id + "").val();
+                var profil = $("#" + div_profil + "").val();
+                var nametalent = $("#" + div_namatalent + "").val();
+                var VideoId = $("#" + div_FileVideoid + "").val();
+                var ViewCount = $("#" + div_ViewCountid + "").val();
+                var TalentId = $("#" + div_Talentid + "").val();
+
+                var jsonRequest = {
+                    UserId: 0,
+                    FileId: VideoId
+                };
+              
+                var UrlInsert = "@Url.Action("InputFileWatched", "Files")";
+                if (VideoId != 0) {
+                    $("#VideoModal").modal('show');
+                    $.ajax({
+                        url: UrlInsert,
+                        //cache: false,
+                        //traditional: true,
+                        type: "POST",
+                        //data: JSON.stringify({ request: jsonRequest }),
+                        data: { model: jsonRequest },
+                        //dataType: "json",
+                        //contentType: "application/json; charset=utf-8",
+                        //async: false,
+                        beforeSend: function () {
+                            //$("#spinner").show();
+                            $(".loadingSign").show();
+                        },
+                        complete: function () {
+                            $(".loadingSign").hide();
+                        },
+                        success: function (data) {
+
+
+
+                        },
+                        error: function (jqXHR, textStatus, errorMessage) {
+                            console.log(errorMessage);
+                        }
+                    });
+
+                    $source[0].src = sources;
+                    $profil[0].src = profil;
+
+                    var Namatalent = nametalent;
+                    $("#views").text(ViewCount);
+                    $("#modalName").text(Namatalent);
+                    if (TalentId != 0) {
+                        $("#TalentLink").attr('href', '../Talent/TalentDetail?TalentId=' + TalentId);
+
+                    }
+
+                    //  $source.parent()[0].load();
+                    $source[0].play();
+                    // $source.parent().load();
+                    $(".modalClose").click(function (e) {
+                        $source[0].pause();
+                        //history.back();
+
+                        window.location.href = "@Url.Action("TalentDetail", "Talent")?TalentId=" + TalentId;
+                        @*var url = "@Url.Action("TalentDetail", "Talent")";
+                        var jsonTalent = {
+                            TalentId: TalentId
+                        };
+                        $.ajax({
+                            url: url,
+                            data: { model: jsonTalent },
+                            beforeSend: function () {
+                                $(".loadingSign").show();
+                            },
+                            complete: function () {
+                                $(".loadingSign").hide();
+                            },
+                            success: function (data) {
+
+                            },
+                            error: function (jqXHR, textStatus, errorMessage) {
+                                console.log(errorMessage);
+                            }
+                        });*@
+                    });
+
+                    $(".modal").on("shown.bs.modal", function () { // any time a modal is shown
+                        var urlReplace = "#" + $(this).attr('id'); // make the hash the id of the modal shown
+                        history.pushState(null, null, urlReplace); // push state that hash into the url
+                    });
+
+                    // If a pushstate has previously happened and the back button is clicked, hide any modals.
+                    $(window).on('popstate', function () {
+                        $(".modal").modal('hide');
+                        $source[0].pause();
+                    });
+                }
+                else {
+                    swal(nametalent + " belum upload videonya, sabar ya");
+                }
+
+            });
+
+
+
+                 $(".Talentexplore-button").click(function (e) {
+
+                e.preventDefault();
+                $("#VideoModal").modal('show');
+                var div_id = $(this).parent().parent().parent().find('.TrendingLinkVideo').attr('id');;
+                     var div_profil = $(this).parent().parent().parent().find('.TrendingLinkPhoto').attr('id');
+                     var div_namatalent = $(this).parent().parent().parent().find('.TrendingLinkName').attr('id');
+                     var div_FileVideoid = $(this).parent().parent().parent().find('.TrendingFileVideoId').attr('id');
+                     var div_ViewCountid = $(this).parent().parent().parent().find('.TrendingViewCount').attr('id');
+                     var div_Talentid = $(this).parent().parent().parent().find('.TrendingTalentId').attr('id');
+                //alert(div_id);
+                var $source = $('#videoplayer');
+                var $profil = $('#modalImg');
+
+                var sources = $("#" + div_id + "").val();
+                var profil = $("#" + div_profil + "").val();
+                var nametalent = $("#" + div_namatalent + "").val();
+                     var VideoId = $("#" + div_FileVideoid + "").val();
+                     var ViewCount = $("#" + div_ViewCountid + "").val();
+                     var TalentId = $("#" + div_Talentid + "").val();
+                var jsonRequest = {
+                    UserId: 0,
+                    FileId: VideoId
+                };
+
+                var UrlInsert = "@Url.Action("InputFileWatched", "Files")";
+
+                $.ajax({
+                    url: UrlInsert,
+                    //cache: false,
+                    //traditional: true,
+                    type: "POST",
+                    //data: JSON.stringify({ request: jsonRequest }),
+                    data: { model: jsonRequest },
+                    //dataType: "json",
+                    //contentType: "application/json; charset=utf-8",
+                    //async: false,
+                    beforeSend: function () {
+                        //$("#spinner").show();
+                        $(".loadingSign").show();
+                    },
+                    complete: function () {
+                        $(".loadingSign").hide();
+                    },
+                    success: function (data) {
+
+
+
+                    },
+                    error: function (jqXHR, textStatus, errorMessage) {
+                        console.log(errorMessage);
+                    }
+                });
+
+                $source[0].src = sources;
+                $profil[0].src = profil;
+
+                var Namatalent = nametalent;
+
+                     $("#views").text(ViewCount);
+                     $("#modalName").text(Namatalent);
+                     if (TalentId != 0) {
+                         $("#TalentLink").attr('href', '../Talent/TalentDetail?TalentId=' + TalentId);
+
+                     }
+
+              //  $source.parent()[0].load();
+                $source[0].play();
+               // $source.parent().load();
+                     $(".modalClose").click(function (e) {
+                        $source[0].pause();
+                        //history.back();
+                         window.location.href = "@Url.Action("TalentDetail", "Talent")?TalentId=" + TalentId;
+                    });
+
+                     $(".modal").on("shown.bs.modal", function () { // any time a modal is shown
+                         var urlReplace = "#" + $(this).attr('id'); // make the hash the id of the modal shown
+                         history.pushState(null, null, urlReplace); // push state that hash into the url
+                     });
+
+                     // If a pushstate has previously happened and the back button is clicked, hide any modals.
+                     $(window).on('popstate', function () {
+                         $(".modal").modal('hide');
+                         $source[0].pause();
+                     });
+
+            });
+
+
+
+            $('#nope').click(function (e) {
+
+                e.preventDefault();
+                TalentIndex = TalentIndex + 1;
+            });
+
+            $('.owl-index').owlCarousel({
+                stagePadding: 50,
+                center: true,
+                loop: true,
+                margin: 10,
+                nav: false,
+                autoplay: true,
+                autoplayTimeout: 4000,
+                autoplayHoverPause: true,
+                responsive: {
+                    0: {
+                        items: 1
+                    }
+                }
+            })
+
+
+            $('.owl-actors').owlCarousel({
+                margin: 10,
+                nav: false,
+                dots: false,
+                loop: false,
+                responsive: {
+                    0: {
+                        items: 2
+                    },
+                    600: {
+                        items: 3
+                    },
+                    1000: {
+                        items: 5
+                    }
+                }
+            })
+
+
+
+        });
+
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            if ("@_httpCookie.Get("UserId")" == "") {
+
+                if (getCookie("Visit") != "1") {
+                    $('#loginModal').modal('show');
+
+                    //Set Cookie
+                    setCookie("Visit", "1", 1);
+
+                }
+            }
+        });
+        function getCookie(cname) {
+            var name = cname + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+        function setCookie(cname, cvalue, exdays) {
+            var d = new Date();
+            d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+            var expires = "expires=" + d.toGMTString();
+            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        }
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //if ($("#adVIdeo").prop('muted', false)) {
+            //    $("#mute").css("background-image", "url(http://image.flaticon.com/icons/svg/10/10430.svg)");
+            //}
+            //else {
+            //    $("#mute").css("background-image", "url(http://image.flaticon.com/icons/svg/10/10776.svg)");
+            //}
+
+            $("#mute").click(function () {
+                if ($("#bannerVideo").prop('muted')) {
+                    $("#bannerVideo").prop('muted', false);
+                    //$("#imgSpeaker").sources("~/template/img/ic-speaker-32.png");
+                    document.getElementById("imgSpeaker").src = "/template/img/ic-speaker-24.png";
+                } else {
+                    $("#bannerVideo").prop('muted', true);
+                    //$("#imgSpeaker").sources("~/template/img/ic-mute-32.png");
+                    document.getElementById("imgSpeaker").src = "/template/img/ic-mute-24.png";
+
+                }
+            });
+        });
+    </script>
+}

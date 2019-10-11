@@ -1,0 +1,1382 @@
+﻿@model Jingl.General.Model.Admin.Transaction.BookModel
+@{
+    ViewData["Title"] = "Confirm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    string enddate = "";
+    if (Model.Status == 0)
+    {
+        if (Model.ExpiredDate.HasValue)
+        {
+            enddate = Model.ExpiredDate.Value.ToString("yyyy-MM-ddTHH:mm:ss");
+        }
+
+    }
+
+}
+<div id="myHeader">
+    <div class="logo-header">
+        <div class="coontainer-fluid">
+            <div class="col-md-12">
+                <ul class="nav">
+                    <li class="nav-item text-center pull-left">
+                        @{
+                            if (Model.IsEmail == 1)
+                            {
+                                <a class="nav-link " href="@Url.Action("Index","Home")">
+                                    <div class="icon-img">
+                                        <img src="/template/img/ic-back-white.png" style="width:42%;margin-left:-25%;margin-top:-8%" alt="" />
+                                    </div>
+                                </a>
+                            }
+                            else
+                            {
+                                <a class="nav-link " href="javascript:history.back()">
+                                    <div class="icon-img">
+                                        <img src="/template/img/ic-back-white.png" style="width:42%;margin-left:-25%;margin-top:-8%" alt="" />
+                                    </div>
+                                </a>
+                            }
+                        }
+                        @*<a class="nav-link" href="javascript:history.back()">
+                                <div class="icon-img">
+                                    <img src="/template/img/ic-back-white.png" style="width:42%;margin-left:-25%;margin-top:-8%" alt="" />
+                                </div>
+                            </a>*@
+                    </li>
+                    <li class="nav-item justify-content-center mr-center">
+                        <div class="headerTops">
+                            <img src="~/template/img/Jing_e 2.png" style="margin-left:-84%" alt="Alternate Text" />
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="box-white">
+    <div class="header-menu pt-4">
+        <ul class="nav">
+
+            <li class="nav-item justify-content-center mr-center">
+                <h4 class="nav-link">Detail Transaksi</h4>
+            </li>
+        </ul>
+    </div>
+
+
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+
+                <div class="payment">
+
+                    @{
+                        if (Model.Status == 0)
+                        {
+                            <center>
+                                <b>Batas Waktu Pembayaran</b>
+                            </center>
+                            <div class="card-countdown shadow-lg mt-2 mb-3">
+                                <div class="countdown " id="my-countdown" data-end-date="@enddate">
+                                    <span class="days" title="Hari">0</span>
+                                    <span class="hours" title="Jam">0</span>
+                                    <span class="minutes" title="Menit">0</span>
+                                </div>
+                            </div>
+
+
+                            <center class="mb-3">
+                                <h6 style="color:mediumpurple">Jika sudah Bayar</h6>
+                            </center>
+                            <button id="btnSudahBayar" class="btn btn-blue" type="button">Saya Sudah Bayar</button>
+
+                        }
+                        else if (Model.Status == -2 || Model.Status == -5 || Model.Status == -8)
+                        {
+
+                        }
+                        else if (Model.Status == -1)
+                        {
+                            @*<button class="btn btn-success float-right">Ulangi Bayar</button>*@
+                            <center class="mb-3">
+                                <h6 style="color:mediumpurple">Transaksimu sudah expired <br /> Silahkan klik <b>"Pesan Lagi"</b> jika ingin mengulangi pemesanan</h6>
+                            </center>
+                            <button class="btn btn-blue" id="btnUlangiBayar">Pesan Lagi</button>
+                        }
+
+                        else
+                        {
+                            <div class="box-orderdetail">
+                                <div class="payment mt20 m-b-20">
+                                    <h4 class="bold">Metode Pembayaran</h4>
+                                    <div class="manual">
+                                        <input class="form-check-input kategori-radio" type="radio" name="PaymentMethod" id="PaymentMethod" value="bank_transfer" />
+                                        <div class="transfer-confirm">
+                                            <span class="sprite bank-transfer"></span>
+                                            <span class="m-l-10"> Bank Transfer</span>
+                                        </div>
+                                    </div>
+                                    <div class="manual">
+                                        <input class="form-check-input kategori-radio" type="radio" name="PaymentMethod" id="PaymentMethod" value="ovo" />
+                                        <div class="transfer-confirm">
+                                            <img src="~/template/img/ovo.jpg" style="width:45px;height: 30px;border-radius:4px" />
+                                            <span class="m-l-10"> Transfer via OVO</span>
+                                        </div>
+                                    </div>
+                                    <div class="manual">
+                                        <input class="form-check-input kategori-radio" type="radio" name="PaymentMethod" id="PaymentMethod" value="gopay" />
+                                        <div class="transfer-confirm">
+                                            <span class="sprite gopay"></span>
+                                            <span class="m-l-10"> Transfer via Go-Pay</span>
+                                        </div>
+                                    </div>
+
+
+                                    @*<a class="manual manualp" href="#">
+                                            <h6> <img class="manual-phone" src="~/template/img/phone-manual.png" alt="Alternate Text" /> Transfer manual</h6>
+                                        </a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="manual" href="@Url.Action("PayConfirm","Booking",new {BookId = Model.Id,PaymentMethodId = 3 })">
+                                            <h6> <img src="~/template/img/gopay.png" alt="Alternate Text" /> Transfer via Go-Pay</h6>
+                                        </a>*@
+
+                                    <div class="form-group">
+                                        <div class="col-12" style="padding-left: 0 !important">
+                                            <h5>Voucher Code : </h5>
+                                            <input type="text" name="VoucherCd" id="VoucherCd" class="form-control" placeholder="Voucher Code" onchange="checkVoucherCode()"/>
+                                            <input type="hidden" name="voucher" id="isValidVoucher" />
+                                            <span id="message"></span>
+                                        </div>
+
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <button id="btnBayar" class="btn btn-blue" type="button">Bayar</button>
+                        }
+                    }
+                </div>
+
+
+
+                <h2 id="result-type"></h2>
+                <pre id="result-data"></pre>
+            </div>
+            <div class="col-12">
+                <div class="box-orderdetail">
+                    <div class="clearfix  sub-detailorder">
+                        <span class="Bold float-left">Nama Talent</span>
+                        @*<h6 class="float-right">@Model.OrderNo  </h6>*@
+                        <div class="float-right">
+                            <input type="hidden" id="TalentId" value="@Model.TalentId" />
+                            <h6 class="float-right">@Model.TalentNm</h6>
+                        </div>
+                    </div>
+                    <div class="clearfix  sub-detailorder">
+                        <span class="Bold float-left">Status Transaksi</span>
+                        <div class="float-right">
+                            <p style="color:#DA2D73; margin-bottom:5px;">
+                                @Model.TransactionStatus
+
+
+                                <input type="hidden" id="BookId" value="@Model.Id" />
+                                <input type="hidden" id="Email" value="@Model.Email" />
+                                <input type="hidden" id="orderNo" value="@Model.OrderNo" />
+                                <input type="hidden" id="PriceAmount" value="@Model.PriceAmount" />
+                                <input type="hidden" id="ProjectNm" value="@Model.ProjectNm" />
+                                <input type="hidden" id="UserCode" value="@Model.UserCode" />
+                                <input type="hidden" id="CustomerName" value="@Model.CustomerName" />
+                                <input type="hidden" id="PhoneNumber" value="@Model.PhoneNumber" />
+                                @*<input type="hidden" id="PhoneNumber" value="@Model.PhoneNumber" />*@
+
+
+                            </p>
+
+
+                            @{
+                                if (Model.Status == -2)
+                                {
+
+                                    <div>
+                                        <a href="@Url.Action("RequestRefund","Account",new {orderNo=Model.OrderNo })" class="btn btn-warning float-right">Proses Refund </a>
+                                    </div>
+
+
+                                }
+                            }
+                        </div>
+
+
+                    </div>
+                    <div class="clearfix  sub-detailorder">
+                        <span class="Bold float-left">Nomor Order</span>
+                        @*<h6 class="float-right">@Model.OrderNo  </h6>*@
+                        <div class="float-right">
+                            <input type="hidden" id="orderNo" value="@Model.OrderNo" />
+                            <input type="text" value="@Model.OrderNo" id="myCopyorder" class="myCopy" readonly>
+                            <div class="tooltip" style="z-index:1">
+                                <i class="fas fa-copy m-l-5" onclick="myCopyorder()" onmouseout="outFuncorder()">
+                                    <span class="tooltiptext" id="myTooltiporder">Copy to clipboard</span>
+                                </i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="clearfix  sub-detailorder">
+                        <span class="Bold float-left">Tanggal Order</span>
+                        <div class="float-right">
+
+                            <h6 class="float-right">
+                                @{
+                                    var lala = Model.CreatedDate.Value.ToString("dd-MM-yyyy");
+                                    if (Model.CreatedDate.HasValue)
+                                    {
+                                        @Model.CreatedDate.Value.ToString("dd-MM-yyyy")
+                                    }
+                                }
+                            </h6>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="box-orderdetail">
+                    <h4>Detail Order</h4>
+
+                    <div class="box-ordertalent m-b-20" style="display:none">
+                        <span class="Bold">Nama Talent</span>
+                        <div class="text-center tlnimg">
+                            <img src="@Model.TalentPhotos" alt="Alternate Text" />
+                            <h6 class="">
+
+                                @Model.TalentNm <input type="hidden" id="TalentId" value="@Model.TalentId" />
+                                <input type="hidden" id="BookId" value="@Model.Id" />
+                            </h6>
+                        </div>
+
+
+                    </div>
+                    <div class="clearfix  sub-detailorder" style="display:none">
+                        <span class="Bold float-left">Kategori Book</span>
+                        <h6 class="float-right">@Model.CategoryNm </h6>
+
+                    </div>
+
+                    <div class="clearfix  sub-detailorder">
+                        <span class="Bold float-left">Judul Project</span>
+                        <h6 class="float-right">@Model.ProjectNm</h6>
+
+                    </div>
+                    <div class="clearfix  sub-detailorder">
+                        <span class="Bold float-left">Untuk</span>
+                        <h6 class="float-right">@Model.To</h6>
+
+                    </div>
+                    <div class="clearfix  sub-detailorder">
+                        <span class="Bold float-left">Dari</span>
+                        <h6 class="float-right">@Model.From</h6>
+
+                    </div>
+                    <div class="clearfix  sub-detailorder">
+                        <span class="Bold float-left">Pesan</span>
+                        <h6 class="float-right">@Model.BriefNeeds</h6>
+
+                    </div>
+                    <div class="clearfix  sub-detailorder" style="display:none">
+                        <span class="Bold float-left">Dipesan oleh</span>
+                        <h6 class="float-right">@Model.UserName</h6>
+
+                    </div>
+
+                    <div class="clearfix  sub-detailorder">
+                        <span class="Bold float-left">Email</span>
+                        <h6 class="float-right">@Model.Email</h6>
+
+                    </div>
+
+                    <div class="clearfix  sub-detailorder" style="display:none">
+                        <span class="Bold float-left">Notification</span>
+                        <h6 class="float-right">
+                            @Model.Notification
+                            <input type="hidden" id="orderNo" value="@Model.OrderNo" />
+                            <input type="hidden" id="PriceAmount" value="@Model.PriceAmount" />
+                        </h6>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-12">
+                <div class="box-orderdetail">
+                    <h4>Informasi Pembayaran</h4>
+                    <div class="clearfix  sub-detailorder">
+                        @{
+                            if (Model.Status != 1)
+                            {
+                                <p class="Bold float-left">Metode Pembayaran</p>
+                                <h6 class="float-right">@Model.PayMethod </h6>
+
+                            }
+                        }
+
+
+
+                    </div>
+
+                    @{
+                        if (Model.PayMethod == "bank_transfer")
+                        {
+                            <div class="clearfix  sub-detailorder">
+                                <span class="Bold float-left">Bank </span>
+                                <h6 class="float-right">@Model.BankName </h6>
+                            </div>
+
+                            <div class="clearfix  sub-detailorder">
+                                <span class="Bold float-left"> Nomor Virtual Account</span>
+                                @*<h6 class="float-right">@Model.VaNumber </h6>*@
+                                <div class="float-right">
+                                    <input type="text" value="@Model.VaNumber" id="myCopyrekening" readonly>
+                                    <div class="tooltip">
+                                        <i class="fas fa-copy m-l-5" onclick="myCopyrekening()" onmouseout="outFuncrekening()">
+                                            <span class="tooltiptext" id="myTooltiprekening">Copy to clipboard</span>
+                                        </i>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+
+                    <div class="dropdown-divider"></div>
+                    <div class="clearfix  sub-detailorder">
+                        <div class="clearfix mt20">
+                            <div class="float-left">
+                                <h5> Harga </h5>
+                            </div>
+                            <div class="float-right">
+                                <h5>
+                                    IDR
+
+                                    <label class="amountlines" id="TotalPay">@Model.PriceAmount</label>
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="clearfix mt20" style="display: none" id="diskon">
+                            <div class="float-left">
+                                <h5> Potongan </h5>
+                            </div>
+                            <div class="float-right">
+                                <h5>
+                                    IDR
+                                    <label class="amountlines" id="lblPotongan"></label>
+                                    <input type="hidden" name="voucher" id="Potogan" value="0" />
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <center>
+                    <div id="=foot" style="margin-bottom: 10px; margin-top:70px">
+                        <h5 class="fw-400">Ada pertanyaan? Hubungin kami <a href="@Url.Action("Support","Account")">disini</a></h5>
+                    </div>
+                </center>
+            </div>
+
+        </div>
+        @*<div class="row">
+                <div class="col-12">
+                    <div class="clearfix mt20">
+                        <div class="float-left">
+                            <h4> Total Payment </h4>
+                        </div>
+                        <div class="float-right">
+                            <h4>
+                                IDR
+
+                                <label class="amountlines">@Model.PriceAmount</label>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 mt30">
+
+                </div>
+            </div>*@
+    </div>
+</div>
+
+
+<div class="modal fade" id="FasPayForm" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+
+            </div>
+            @*<div class="modal-header" hidden>
+                    <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer" hidden>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>*@
+        </div>
+    </div>
+</div>
+
+@section scripts
+    {
+    @*<script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="@Model.ClientKeyId"></script>*@
+    <script src="https://app.midtrans.com/snap/snap.js" data-client-key="@Model.ClientKeyId"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            var payButton = document.getElementById('btnBayar');
+            var resultType = document.getElementById('result-type');
+            var resultData = document.getElementById('result-data');
+
+            //window.onbeforeunload = function () {
+            //    return 'Are you sure you want to leave this page?';
+
+            //};
+
+            function changeResult(type, data) {
+                //resultType.innerHTML = type;
+                //resultData.innerHTML = JSON.stringify(data);
+
+                var BookId = $("#BookId").val();
+                var UrlPost = "@Url.Action("UpdateWaitForPaymentStatus", "Payment")";
+
+                $.ajax({
+                    url: UrlPost,
+                    type: "POST",
+                    data: { json: JSON.stringify(data), bookId: BookId },
+                    beforeSend:
+                        function () {
+
+                        },
+                    success: function (data) {
+                        window.location.href = "@Url.Action("PaymentSuccess", "Booking")";
+
+
+                    },
+                    error: function (jqXHR, textStatus, errorMessage) {
+                        console.log(errorMessage);
+                    }
+                });
+
+
+            }
+            //payButton.onclick = function () {
+            //    // Insert your own snap token here
+            //    snap.pay("2df06b5c-ea9a-4bc2-b0bd-d69f8b285efb",
+            //        {
+            //            // TODO implement these callbacks
+            //            onSuccess: function (result) {
+            //                console.log(result);
+            //                changeResult('success', result);
+            //            },
+            //            onPending: function (result) {
+            //                console.log(result);
+            //                changeResult('pending', result);
+            //            },
+            //            onError: function (result) {
+            //                console.log(result);
+            //                changeResult('error', result);
+            //            },
+            //            onClose: function () {
+
+            //            }
+            //        })
+            //        ;
+            //};
+
+            $('#btnSudahBayar').click(function (e) {
+                e.preventDefault();
+
+                  var url = "@Url.Action("CheckPaidBook", "Booking")";
+                  $.ajax({
+                    url: url,
+
+                    type: "POST",
+                      data: { BookId: $("#BookId").val()},
+
+                    beforeSend:
+                        function () {
+
+                        },
+                    success: function (data) {
+
+                        if (data == false) {
+                              $.gritter.add({
+                                            title: 'Warning !',
+                                            text: 'Mohon selesaikan pembayaran anda '
+                                        });
+                        }
+
+                        else {
+                             window.location.href = "@Url.Action("PaymentSuccess", "Booking")";
+                        }
+
+
+
+                    },
+                    error: function (jqXHR, textStatus, errorMessage) {
+                        console.log(errorMessage);
+                    }
+                });
+            });
+
+            $('#btnUlangiBayar').click(function (e) {
+                swal({
+                    title: "Konfirmasi",
+                    text: "Apakah kamu yakin ingin mengulangi pembayaran ? ",
+                    icon: "info",
+                    buttons: [
+                        'Cancel',
+                        'Yes'
+                    ],
+                    dangerMode: true,
+                }).then(function (isConfirm) {
+                    if (isConfirm) {
+                        swal({
+                            title: 'Success!',
+                            text: 'Transaksi akan diulangi ke pembayaran',
+                            icon: 'success'
+                        }).then(function () {
+                            var jsonRequest = {
+                                Id: $("#BookId").val(),
+
+                                };
+
+                                $.ajax({
+                                    url: "@Url.Action("UlangiPembayaran", "Booking")",
+
+                                    type: "POST",
+                                    data: { model: jsonRequest },
+
+                                    beforeSend: function () {
+                                        //$("#spinner").show();
+                                        $(".loadingSign").show();
+                                    },
+                                    complete: function () {
+                                        $(".loadingSign").hide();
+                                    },
+                                    success: function (data) {
+
+                                        if (data.status == "Error") {
+                                            swal("Error", "Proses Transaksi Error", "error");
+                                        }
+                                        else {
+                                            setTimeout(function () {
+                                                swal({
+                                                    title: "Success",
+                                                    text: "Ulangi Pembayaran berhasil di proses",
+                                                    icon: "success",
+                                                }).then(function () {
+                                                    window.location.reload();
+
+                                                }), 4000
+                                            });
+                                        }
+
+
+                                    },
+                                    error: function (jqXHR, textStatus, errorMessage) {
+                                        console.log(errorMessage);
+                                    }
+                                });
+
+
+                            });
+            }
+                else {
+                        swal("Cancel", "Transaksimu tetap berada di status yang sama", "error");
+                    }
+                })
+            });
+
+
+            $('#btnBayar').click(function (e) {
+                @*e.preventDefault();
+                var OrderNo = $("#orderNo").val();
+                var PriceAmount = $("#PriceAmount").val();
+                var url = "@Url.Action("GetMidTransToken", "Booking")";
+                var jsonRequest = {
+                    OrderNo: OrderNo,
+                    PriceAmount: PriceAmount
+                };
+
+
+
+                $.ajax({
+                    url: url,
+
+                    type: "POST",
+                    data: { model: jsonRequest},
+
+                    beforeSend:
+                        function () {
+
+                        },
+                    success: function (data) {
+
+                        if (data == "Error") {
+                             $.gritter.add({
+                                            title: 'Warning !',
+                                            text: 'Mohon selesaikan pembayaran anda '
+                                        });
+
+
+
+                        }
+
+                        else {
+                            snap.pay(data.token,
+                                {
+                                    // TODO implement these callbacks
+                                    onSuccess: function (result) {
+                                        console.log(result);
+                                        changeResult('success', result);
+                                        window.location.href = "@Url.Action("PaymentSuccess", "Booking")";
+                                    },
+                                    onPending: function (result) {
+                                        console.log(result);
+                                        changeResult('pending', result);
+                                           window.location.href = "@Url.Action("PaymentSuccess", "Booking")";
+                                    },
+                                    onError: function (result) {
+                                        console.log(result);
+                                        changeResult('error', result);
+                                        window.location.href = "@Url.Action("PaymentSuccess", "Booking")";
+                                    },
+
+                                    onClose: function () {
+                                        $.gritter.add({
+                                            title: 'Warning !',
+                                            text: 'Please complete your payment '
+                                        });
+                                    }
+                                })
+                        }
+
+
+
+                    },
+                    error: function (jqXHR, textStatus, errorMessage) {
+                        console.log(errorMessage);
+                    }
+                });*@
+
+
+                 e.preventDefault();
+                //$('#PaymentMethod:checked').val();
+                var PaymentMethod = $('#PaymentMethod:checked').val();
+
+                if (PaymentMethod == "gopay") {
+                    if (Number($("#PriceAmount").val()) - Number($("#Potogan").val()) > 0) {
+                        totalPay = $("#PriceAmount").val() - $("#Potogan").val();
+                    }
+                    else {
+                        totalPay = 0;
+                    }
+                    var OrderNo = $("#orderNo").val();
+                    var PriceAmount = $("#PriceAmount").val();
+                    var url = "@Url.Action("GetMidTransToken", "Booking")";
+                    var jsonRequest = {
+                        OrderNo: OrderNo,
+                        TotalPay: totalPay,
+                        PriceAmount: $("#PriceAmount").val(),
+                        Potongan: $("#Potogan").val(),
+                        VoucherCode: $("#VoucherCd").val(),
+                        Id: $("#BookId").val()
+                    };
+
+                    $.ajax({
+                        url: url,
+
+                        type: "POST",
+                        data: { model: jsonRequest },
+
+                        beforeSend:
+                            function () {
+
+                            },
+                        success: function (data) {
+
+                            if (data == "Error") {
+                                $.gritter.add({
+                                    title: 'Warning !',
+                                    text: 'Mohon selesaikan pembayaran anda '
+                                });
+
+
+
+                            }
+
+                            else {
+                                snap.pay(data.token,
+                                    {
+                                        // TODO implement these callbacks
+                                        onSuccess: function (result) {
+                                            console.log(result);
+                                            changeResult('success', result);
+                                            window.location.href = "@Url.Action("PaymentSuccess", "Booking")";
+                                        },
+                                        onPending: function (result) {
+                                            console.log(result);
+                                            changeResult('pending', result);
+                                            window.location.href = "@Url.Action("PaymentSuccess", "Booking")";
+                                        },
+                                        onError: function (result) {
+                                            console.log(result);
+                                            changeResult('error', result);
+                                            window.location.href = "@Url.Action("PaymentSuccess", "Booking")";
+                                        },
+
+                                        onClose: function () {
+                                            $.gritter.add({
+                                                title: 'Warning !',
+                                                text: 'Please complete your payment '
+                                            });
+                                        }
+                                    })
+                            }
+
+
+
+                        },
+                        error: function (jqXHR, textStatus, errorMessage) {
+                            console.log(errorMessage);
+                        }
+                    });
+
+                }
+
+                else if (PaymentMethod == "bank_transfer") {
+                    var OrderNo = $("#orderNo").val();
+                    if (Number($("#PriceAmount").val()) - Number($("#Potogan").val()) > 0) {
+                        totalPay = $("#PriceAmount").val() - $("#Potogan").val();
+                    }
+                    else {
+                        totalPay = 0;
+                    }
+                    var jsonRequest = {
+                        Id: $("#BookId").val(),
+                        TotalPay: totalPay,
+                        OrderNo: $("#orderNo").val(),
+                        Email: $("#Email").val(),
+                        CustomerName: $("#CustomerName").val(),
+                        UserCode: $("#UserCode").val(),
+                        PriceAmount: $("#PriceAmount").val(),
+                        Potongan: $("#Potogan").val(),
+                        VoucherCode: $("#VoucherCd").val()
+
+                    };
+
+                    //$("#FasPayForm").modal();
+                    $.ajax({
+                        url: "@Url.Action("FasPayPembayaran", "Payment")",
+                        //cache: false,
+                        //traditional: true,
+                        type: "POST",
+                        data: { model: jsonRequest },
+                        //data: JSON.stringify({ request: jsonRequest }),
+                        dataType: "html",
+                        //contentType: "application/json; charset=utf-8",
+                        async: false,
+                        //beforeSend:
+                        //    function () {
+                        //        $("#spinner").show();
+                        //    },
+                        success: function (data) {
+                            //$("#spinner").hide();
+                         $("#FasPayForm").html(data);
+                            $("#FasPayForm").modal();
+                            $("label.amountlines").digits();
+                            $(".mandiri-btn").click(function () {
+                                $(".btn-main").toggleClass("shows");
+                            });
+
+                            $(".mandiri-back").click(function () {
+                                $(".btn-main").removeClass("shows");
+                            });
+                            $(".btn-main").click(function () {
+                                $(this).removeClass("shows");
+                                $(".btn-main2").addClass("shows");
+                            })
+
+                            $(".bni-btn").click(function () {
+                                $(".btn-main3").toggleClass("shows");
+                            });
+                            $(".bni-back").click(function () {
+                                $(".btn-main3").removeClass("shows");
+                            });
+                            $(".btn-main3").click(function () {
+                                $(this).removeClass("shows");
+                                $(".btn-main4").addClass("shows");
+                            })
+
+                            $(".bri-btn").click(function () {
+                                $(".btn-main5").toggleClass("shows");
+                            });
+                            $(".bri-back").click(function () {
+                                $(".btn-main5").removeClass("shows");
+                            });
+
+                            $(".btn-main5").click(function () {
+                                $(this).removeClass("shows");
+                                $(".btn-main6").addClass("shows");
+                            })
+
+                            $(".bca-btn").click(function () {
+                                $(".btn-main7").toggleClass("shows");
+                            });
+                            $(".bca-back").click(function () {
+                                $(".btn-main7").removeClass("shows");
+                            });
+
+                            $(".btn-main7").click(function () {
+                                $(this).removeClass("shows");
+                                $(".btn-main8").addClass("shows");
+                            })
+
+                            $("#btnClose").click(function () {
+                                $('#FasPayForm').modal('hide');
+                            })
+
+                            function HideModal() {
+                                $('#FasPayForm').modal('hide');
+                            }
+
+                            $("#transfmandiri").click(function () {
+                                //$("#mandirirek").show();
+                                //alert("lala");
+                                $("#no_va").val('Mohon Tunggu Sebentar');
+                                if (Number($("#PriceAmount").val()) - Number($("#Potogan").val()) > 0) {
+                                    totalPay = $("#PriceAmount").val() - $("#Potogan").val();
+                                }
+                                else {
+                                    totalPay = 0;
+                                }
+                                var jsonRequest = {
+                                    OrderNo: $("#orderNo").val(),
+                                    TotalPay: totalPay,
+                                    ProjectNm: $("#ProjectNm").val(),
+                                    Email: $("#Email").val(),
+                                    CustomerName: $("#CustomerName").val(),
+                                    UserCode: $("#UserCode").val(),
+                                    PriceAmount: $("#PriceAmount").val(),
+                                    Potongan: $("#Potogan").val(),
+                                    VoucherCode: $("#VoucherCd").val(),
+                                    BankSelected: "Mandiri"
+                                };
+
+                                $.ajax({
+                                    url: "@Url.Action("PayFasPay", "Payment")",
+
+                                    type: "POST",
+                                    data: { model: jsonRequest },
+
+                                    beforeSend:
+                                        function () {
+
+                                        },
+                                    success: function (data) {
+
+
+                                        $("#no_va").val(data.trx_id);
+
+                                    },
+                                    error: function (jqXHR, textStatus, errorMessage) {
+                                        console.log(errorMessage);
+                                    }
+                                });
+
+
+                            });
+
+                               $("#transfbri").click(function () {
+                                //$("#mandirirek").show();
+                                //alert("lala");
+
+                                $("#no_va_bri").val('Mohon Tunggu Sebentar');
+                                   if (Number($("#PriceAmount").val()) - Number($("#Potogan").val()) > 0) {
+                                       totalPay = $("#PriceAmount").val() - $("#Potogan").val();
+                                   }
+                                   else {
+                                       totalPay = 0;
+                                   }
+                                var jsonRequest = {
+                                    OrderNo: $("#orderNo").val(),
+                                    TotalPay: totalPay,
+                                    ProjectNm: $("#ProjectNm").val(),
+                                    Email: $("#Email").val(),
+                                    CustomerName: $("#CustomerName").val(),
+                                    UserCode: $("#UserCode").val(),
+                                    PriceAmount: $("#PriceAmount").val(),
+                                    Potongan: $("#Potogan").val(),
+                                    VoucherCode: $("#VoucherCd").val(),
+                                    BankSelected: "BRI"
+                                };
+
+                                $.ajax({
+                                    url: "@Url.Action("PayFasPay", "Payment")",
+
+                                    type: "POST",
+                                    data: { model: jsonRequest },
+
+                                    beforeSend: function () {
+                                        //$("#spinner").show();
+                                        $(".loadingSign").show();
+                                    },
+                                    complete: function () {
+                                        $(".loadingSign").hide();
+                                    },
+                                    success: function (data) {
+
+
+                                        $("#no_va_bri").val(data.trx_id);
+
+                                    },
+                                    error: function (jqXHR, textStatus, errorMessage) {
+                                        console.log(errorMessage);
+                                    }
+                                });
+
+
+                            });
+
+                            $("#transfbni").click(function () {
+                                //$("#mandirirek").show();
+                                //alert("lala");
+                                $("#no_va_bni").val('Mohon Tunggu Sebentar');
+                                if (Number($("#PriceAmount").val()) - Number($("#Potogan").val()) > 0) {
+                                    totalPay = $("#PriceAmount").val() - $("#Potogan").val();
+                                }
+                                else {
+                                    totalPay = 0;
+                                }
+                                var jsonRequest = {
+                                    OrderNo: $("#orderNo").val(),
+                                    TotalPay: totalPay,
+                                    ProjectNm: $("#ProjectNm").val(),
+                                    Email: $("#Email").val(),
+                                    CustomerName: $("#CustomerName").val(),
+                                    UserCode: $("#UserCode").val(),
+                                    PriceAmount: $("#PriceAmount").val(),
+                                    Potongan: $("#Potogan").val(),
+                                    VoucherCode: $("#VoucherCd").val(),
+                                    BankSelected: "BNI"
+                                };
+
+                                $.ajax({
+                                    url: "@Url.Action("PayFasPay", "Payment")",
+
+                                    type: "POST",
+                                    data: { model: jsonRequest },
+
+                                    beforeSend:
+                                        function () {
+
+                                        },
+                                    success: function (data) {
+
+
+                                        $("#no_va_bni").val(data.trx_id);
+
+                                    },
+                                    error: function (jqXHR, textStatus, errorMessage) {
+                                        console.log(errorMessage);
+                                    }
+                                });
+
+
+                            });
+
+                            $("#transfbca").click(function () {
+                                //$("#mandirirek").show();
+                                //alert("lala");
+                                $("#no_va_bca").val('Mohon Tunggu Sebentar');
+                                if (Number($("#PriceAmount").val()) - Number($("#Potogan").val()) > 0) {
+                                    totalPay = $("#PriceAmount").val() - $("#Potogan").val();
+                                }
+                                else {
+                                    totalPay = 0;
+                                }
+                                var jsonRequest = {
+                                    OrderNo: $("#orderNo").val(),
+                                    TotalPay: totalPay,
+                                    ProjectNm: $("#ProjectNm").val(),
+                                    Email: $("#Email").val(),
+                                    CustomerName: $("#CustomerName").val(),
+                                    UserCode: $("#UserCode").val(),
+                                    PriceAmount: $("#PriceAmount").val(),
+                                    Potongan: $("#Potogan").val(),
+                                    VoucherCode: $("#VoucherCd").val(),
+                                    BankSelected: "BCA",
+                                };
+
+                                $.ajax({
+                                    url: "@Url.Action("PayFasPay", "Payment")",
+
+                                    type: "POST",
+                                    data: { model: jsonRequest },
+
+                                    beforeSend:
+                                        function () {
+
+                                        },
+                                    success: function (data) {
+
+
+                                        $("#no_va_bca").val(data.trx_id);
+
+                                    },
+                                    error: function (jqXHR, textStatus, errorMessage) {
+                                        console.log(errorMessage);
+                                    }
+                                });
+
+
+                            });
+
+
+                            //$("")
+
+
+                        },
+                        error: function (jqXHR, textStatus, errorMessage) {
+                            console.log(errorMessage);
+                        }
+                    });
+
+                }
+                        else if (PaymentMethod == "ovo") {
+                    if (Number($("#PriceAmount").val()) - Number($("#Potogan").val()) > 0) {
+                        totalPay = $("#PriceAmount").val() - $("#Potogan").val();
+                    }
+                    else {
+                        totalPay = 0;
+                    }
+                    var jsonRequest = {
+                        OrderNo: $("#orderNo").val(),
+                        TotalPay: totalPay,
+                        ProjectNm: $("#ProjectNm").val(),
+                        BankSelected: "ovo",
+                        Email: $("#Email").val(),
+                        CustomerName: $("#CustomerName").val(),
+                        UserCode: $("#UserCode").val(),
+                        PhoneNumber: $("#PhoneNumber").val(),
+                        PriceAmount: $("#PriceAmount").val(),
+                        Potongan: $("#Potogan").val(),
+                        VoucherCode: $("#VoucherCd").val(),
+                                };
+
+                                $.ajax({
+                                    url: "@Url.Action("PayFasPay", "Payment")",
+
+                                    type: "POST",
+                                    data: { model: jsonRequest },
+
+                                    beforeSend: function () {
+                                        //$("#spinner").show();
+                                        $(".loadingSign").show();
+                                    },
+                                    complete: function () {
+                                        $(".loadingSign").hide();
+                                    },
+                                    success: function (data) {
+
+                                        setTimeout(function () {
+                                            swal({
+                                                title: "Success",
+                                                text: "Transaksi ovo anda berlaku selama 30 detik setelah anda memasukkan ovo number anda",
+                                                icon: "success",
+                                            }).then(function () {
+                                                window.location.href = data.redirect_url;
+
+                                            }), 4000
+                                        });
+                                        //$("#no_va_bni").text(data.trx_id);
+
+                                    },
+                                    error: function (jqXHR, textStatus, errorMessage) {
+                                        console.log(errorMessage);
+                                    }
+                                });
+
+
+                }
+                else {
+                    $.gritter.add({
+                        title: 'Warning !',
+                        text: 'Pilih Metode Pembayaran terlebih dahulu'
+                    });
+                }
+
+
+
+            });
+
+
+
+
+            @*$('#btnBayar').click(function (e) {
+                e.preventDefault();
+                var OrderNo = $("#FirstName").val();
+                var PriceAmount = $("#LastName").val();
+                var UserName = $("#UserName").val();
+                var email = $("#Email").val();
+                var password = $("#Password").val();
+                var country = $("#Country").val();
+                var region = $("#Region").val();
+                var birthDate = $("#BirthDate").val();
+                var gender = $("#Gender").val();
+                var phoneNumber = $("#PhoneNumber").val();
+                var url = "@Url.Action("SignUp","Account")";
+                var jsonRequest = {
+                    FirstName: firstName,
+                    LastName: lastName,
+                    Email: email,
+                    Password: password,
+                    Country: country,
+                    Region: region,
+                    BirthDate: birthDate,
+                    Gender: gender,
+                    PhoneNumber: phoneNumber,
+                    UserName: UserName
+                };
+
+
+
+                $.ajax({
+                    url: url,
+                    //cache: false,
+                    //traditional: true,
+                    type: "POST",
+                    data: { model: jsonRequest},
+                    //contentType: "application/json; charset=utf-8",
+                    //async: false,
+                    beforeSend:
+                        function () {
+                            //$("#spinner").show();
+                        },
+                    success: function (data) {
+
+                        if (data == "OK") {
+                            window.location.href = "@Url.Action("Otp","Account")";
+                        }
+
+                        else {
+
+                        }
+
+
+
+                    },
+                    error: function (jqXHR, textStatus, errorMessage) {
+                        console.log(errorMessage);
+                    }
+                });
+
+
+            });*@
+        });
+    </script>
+    <script type="text/javascript">
+        function myCopyrekening() {
+            var copyTextrek = document.getElementById("myCopyrekening");
+            copyTextrek.select();
+            document.execCommand("copy");
+
+            var tooltip = document.getElementById("myTooltiprekening");
+            tooltip.innerHTML = "Copied: " + copyTextrek.value;
+        }
+
+        function outFuncrekening() {
+            var tooltip = document.getElementById("myTooltiprekening");
+            tooltip.innerHTML = "Copy to clipboard";
+        }
+
+        function myCopyorder() {
+            var copyText = document.getElementById("myCopyorder");
+            copyText.select();
+            document.execCommand("copy");
+
+            var tooltip = document.getElementById("myTooltiporder");
+            tooltip.innerHTML = "Copied: " + copyText.value;
+        }
+
+        function myCopyrek() {
+            var copyTextrek = document.getElementById("no_va");
+            copyTextrek.select();
+            document.execCommand("copy");
+
+            var tooltip = document.getElementById("myTooltip");
+            tooltip.innerHTML = "Copied: " + copyTextrek.value;
+        }
+
+        function outFuncrek() {
+            var tooltip = document.getElementById("myTooltip");
+            tooltip.innerHTML = "Copy to clipboard";
+        }
+
+        function outFuncorder() {
+            var tooltip = document.getElementById("myTooltiporder");
+            tooltip.innerHTML = "Copy to clipboard";
+        }
+
+        function myCopybni() {
+            var copyText = document.getElementById("myCopybni");
+            copyText.select();
+            document.execCommand("copy");
+
+            var tooltip = document.getElementById("myTooltipbni");
+            tooltip.innerHTML = "Copied: " + copyText.value;
+        }
+
+        function outFuncbni() {
+            var tooltip = document.getElementById("myTooltipbni");
+            tooltip.innerHTML = "Copy to clipboard";
+        }
+
+        function myCopyrekbni() {
+            var copyTextrek = document.getElementById("no_va_bni");
+            copyTextrek.select();
+            document.execCommand("copy");
+
+            var tooltip = document.getElementById("myTooltiprekbni");
+            tooltip.innerHTML = "Copied: " + copyTextrek.value;
+        }
+
+        function outFuncrekbni() {
+            var tooltip = document.getElementById("myTooltiprekbni");
+            tooltip.innerHTML = "Copy to clipboard";
+        }
+
+        function myCopybri() {
+            var copyTextrek = document.getElementById("myCopybri");
+            copyTextrek.select();
+            document.execCommand("copy");
+
+            var tooltip = document.getElementById("myTooltipbri");
+            tooltip.innerHTML = "Copied: " + copyTextrek.value;
+        }
+
+        function outFuncbri() {
+            var tooltip = document.getElementById("myTooltipbri");
+            tooltip.innerHTML = "Copy to clipboard";
+        }
+
+        function myCopyrekbri() {
+            var copyTextrek = document.getElementById("no_va_bri");
+            copyTextrek.select();
+            document.execCommand("copy");
+
+            var tooltip = document.getElementById("myTooltiprekbri");
+            tooltip.innerHTML = "Copied: " + copyTextrek.value;
+        }
+
+        function outFuncrekbri() {
+            var tooltip = document.getElementById("myTooltiprekbri");
+            tooltip.innerHTML = "Copy to clipboard";
+        }
+
+        function myCopybca() {
+            var copyTextrek = document.getElementById("myCopybca");
+            copyTextrek.select();
+            document.execCommand("copy");
+
+            var tooltip = document.getElementById("myTooltipbca");
+            tooltip.innerHTML = "Copied: " + copyTextrek.value;
+        }
+
+        function outFuncbca() {
+            var tooltip = document.getElementById("myTooltipbca");
+            tooltip.innerHTML = "Copy to clipboard";
+        }
+
+        function myCopyrekbca() {
+            var copyTextrek = document.getElementById("no_va_bca");
+            copyTextrek.select();
+            document.execCommand("copy");
+
+            var tooltip = document.getElementById("myTooltiprekbca");
+            tooltip.innerHTML = "Copied: " + copyTextrek.value;
+        }
+
+        function outFuncrekbca() {
+            var tooltip = document.getElementById("myTooltiprekbca");
+            tooltip.innerHTML = "Copy to clipboard";
+        }
+
+    </script>
+    <script type="text/javascript">
+
+
+    </script>
+    <script type="text/javascript">
+        function checkVoucherCode() {
+            var VoucherCd = $("#VoucherCd").val();
+            var PriceAmount = $("#PriceAmount").val();
+            var url = '@Url.Action("VerifyVoucherCode", "Booking")';
+            console.log(VoucherCd);
+            if (VoucherCd != '' && VoucherCd != null) {
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: {
+                        VoucherCd: VoucherCd,
+                        PriceAmount: PriceAmount
+                    },
+                    success: function (data) {
+                        var message = $("#message");
+                        var potongan = $("#Potogan");
+                        var lblPotongan = $("#lblPotongan");
+                        if (data > 0) {
+
+                            message.css("color", "green");
+                            message.html("Voucher is valid");
+                            lblPotongan.addClass("amountlines");
+                            lblPotongan.html(data.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'));
+                            potongan.val(data);
+                            console.log(data);
+                            console.log(potongan.val());
+                            $("#isValidVoucher").val(1);
+                            document.getElementById('diskon').style.display = 'block';
+                        } else {
+
+                            message.css("color", "red");
+                            message.html("Voucher is NOT valid");
+                            potongan.val(data);
+                            $("#isValidVoucher").val(0);
+                            document.getElementById('diskon').style.display = 'none';
+                        }
+                    }
+                })
+            }
+            else {
+                var message = $("#message");
+                var potongan = $("#Potogan");
+                message.css("color", "red");
+                message.html("");
+                potongan.val(0);
+                $("#isValidVoucher").val(1);
+                document.getElementById('diskon').style.display = 'none';
+            }
+        }
+    </script>
+}
+
+

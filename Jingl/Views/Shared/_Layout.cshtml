@@ -1,0 +1,992 @@
+﻿@using System.Collections.Generic
+@using System.Linq
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Http.Authentication
+@using Jingl.Web.Services
+@inject CookieManager.ICookie _httpCookie
+@inject Microsoft.AspNetCore.Identity.SignInManager<ApplicationUser> SignInManager
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="~/template/img/bgr_1.png">
+    <title>Fameo</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    @*<meta property="og:image" content="https://storagejingdev.blob.core.windows.net/photos/icon-512x512.png" name="image" />
+        <meta property="og:url" content="https://storagejingdev.blob.core.windows.net/photos/icon-512x512.png"/>
+        <meta content="" name="description" />
+        <meta content="" name="author" />*@
+
+
+    <meta property="og:type" content="article" />
+    <meta name="keywords"
+          content="prabowo,
+                    Jokowi,
+                    Indonesia,
+                    download,
+                    persib,
+                    pemilu,
+                    fb,
+                    nonton,
+                    video,
+                    streaming,
+                    berita,
+                    Instagram,
+                    youtube,
+                    facebook,
+                    jakarta,
+                    Bekasi,
+                    marvel,
+                    kompas,
+                    persija,
+                    download lagu,
+                    jadwal liga inggris,
+                    gudang lagu,
+                    mp3,
+                    lagu,
+                    video max,
+                    dj,
+                    download mp3,
+                    foto hot,
+                    hana anisa,
+                    klasemen liga inggris,
+                    okezone,
+                    berita motogp,
+                    okezone bola,
+                    susu besar,
+                    payudara besar,
+                    jadwal liga champion 2017,
+                    hotel alexis,
+                    semok,
+                    tinju,
+                    sindonews,
+                    detik,
+                    fokus,
+                    dapur,
+                    pilkadadki,
+                    ramadan,
+                    piala dunia,
+                    android,
+                    iphone,
+                    transmedia,
+                    cuaca,
+                    lagu download,
+                    cerita de,
+                    traveloka,
+                    perib,
+                    ig,
+                    jadwal liga champion,
+                    liga ingeris,
+                    nella kharisma,
+                    whatsapp,
+                    terjemahan,
+                    chord gitar,
+                    vide lucu,
+                    juventus,
+                    video mesum,
+                    viral,
+                    barcelona,
+                    lucinta luna,
+                    vanessa angel,
+                    wanita seksi,
+                    seword,
+                    oke,
+                    sindo,
+                    warta terkini,
+                    berita terkini,
+                    koran sindo,
+                    tiktok,
+                    tokopedia,
+                    komisi pemilihan umum,
+                    tribunnews,
+                    tribun,
+                    bmkg,
+                    kata kata mutiara,
+                    kata kata bijak,
+                    kompas hari ini,
+                    berita kompas,
+                    kompas berita,
+                    kabar hari ini,
+                    indonesia hari ini,
+                    bukalapak,
+                    indofeed,
+                    novel dilan,
+                    kail pancingan,
+                    cek tagihan,
+                    buka,
+                    boneka doraemon,
+                    download games,
+                    korea film,
+                    drama korea,
+                    cpns,
+                    tugujogja,
+                    endorse,
+                    emoticon,
+                    Fameo,
+                    Famous,
+                    Terkenal" />
+    <meta name="description" content="Fameo aplikasi untuk kalian bisa terkoneksi dan berbagi momen yang otentik dan memorable">
+    <meta name="author" content="Site Author">
+    <meta name="robots" content="index,follow">
+    @{
+
+        if (ViewData["MetaImage"] == null)
+        {
+            ViewData["MetaImage"] = "https://storagejingdev.blob.core.windows.net/photos/icon-512x512.png";
+
+        }
+
+        if (ViewData["Description"] == null)
+        {
+            ViewData["Description"] = "JINGL KREASI INDONESIA";
+
+        }
+
+        if (ViewData["Url"] == null)
+        {
+            ViewData["Url"] = "https://app.jingl.com/Home/Index";
+
+        }
+
+        if (ViewData["Title"] == null)
+        {
+            ViewData["Title"] = "Fameo";
+
+        }
+
+    }
+    <meta property="og:url" content="@ViewData["Url"]" />
+    <meta property="og:title" content="@ViewData["Title"]" />
+    <meta property="og:description" content="@ViewData["Description"]" />
+    <meta property="og:image" content="@ViewData["MetaImage"]" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="628" />
+    <link rel="apple-touch-icon" href="~/images/icons/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="~/images/icons/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="~/images/icons/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="~/images/icons/icon-152x152.png">
+
+    <link rel="manifest" href="/manifest.json">
+
+
+    <link href="~/splashscreens/iphone5_splash.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+    <link href="~/splashscreens/iphone6_splash.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+    <link href="~/splashscreens/iphoneplus_splash.png" media="(device-width: 621px) and (device-height: 1104px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
+    <link href="~/splashscreens/iphonex_splash.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
+    <link href="~/splashscreens/iphonexr_splash.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+    <link href="~/splashscreens/iphonexsmax_splash.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
+    <link href="~/splashscreens/ipad_splash.png" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+    <link href="~/splashscreens/ipadpro1_splash.png" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+    <link href="~/splashscreens/ipadpro3_splash.png" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+    <link href="~/splashscreens/ipadpro2_splash.png" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+
+
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+    <link href="~/template/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet" />
+    <link href="~/template/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/template/plugins/font-awesome/css/all.min.css" rel="stylesheet" />
+    <link href="~/template/plugins/animate/animate.min.css" rel="stylesheet" />
+    <link href="~/template/css/default/style.min.css" rel="stylesheet" />
+    <link href="~/template/css/default/style-responsive.min.css" rel="stylesheet" />
+    <link href="~/template/css/style.css" rel="stylesheet" />
+    <link href="~/template/css/default/theme/default.css" rel="stylesheet" id="theme" />
+    <link href="~/template/css/default/theme/default.css" rel="stylesheet" id="theme" />
+    <link href="~/template/css/better-rating.css" rel="stylesheet" />
+    <link href="~/template/plugins/OwlCarousel/dist/assets/owl.carousel.min.css" rel="stylesheet" />
+    <link href="~/template/plugins/OwlCarousel/dist/assets/owl.theme.default.min.css" rel="stylesheet" />
+    <link href="~/template/plugins/nvd3/build/nv.d3.css" rel="stylesheet" />
+    <link href="~/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+    <link href="~/template/plugins/dropzone/dropzone.css" rel="stylesheet" />
+    <link href="~/template/plugins/bootstrap-select/bootstrap-select.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css" rel="stylesheet" />
+    <link href="~/assets/selectpicker/bootstrap-select.min.css" rel="stylesheet" />
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.plugins.min.js"></script>
+
+
+    <!-- ================== END BASE CSS STYLE ================== -->
+    <!-- ================== BEGIN BASE JS ================== -->
+    <script src="~/template/plugins/pace/pace.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
+    
+    <!-- ================== END BASE JS ================== -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-142500892-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-142500892-1');
+    </script>
+</head>
+<body class="pace-top">
+    <!-- facebook share -->
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/id_ID/sdk.js#xfbml=1&version=v3.3&appId=1608911229239324&autoLogAppEvents=1"></script>
+    <!-- begin #page-loader -->
+    <div id="page-loader" class="fade show"><span class="spinner"></span></div>
+    <!-- end #page-loader -->
+    <!-- begin #page-container -->
+    <div id="page-containers">
+        <!-- begin #top-menu -->
+        <!-- end #top-menu -->
+        <input type="hidden" id="hdnUserId" value="@_httpCookie.Get("UserId")" />
+        <input type="hidden" id="hdnRoleId" value="@_httpCookie.Get("Role_ID")" />
+
+        @*@{
+                    if (_httpCookie.Get("UserId") == null )
+                    {
+                        return RedirectToActionResult();
+                    }
+            }*@
+        @RenderBody()
+        <!-- end page container -->
+
+        <div class="modal fade" id="VideoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-full" role="document">
+                <div class="modal-content">
+                    @*<div class="modal-header">
+                            <div class="modal-title modal-explore-title" id="exampleModalCenterTitle">
+                                <img src="~/template/img/talent1.jpg" class="modal-img" id="modalImg" alt="Alternate Text" />
+                                <span class="modalName" id="modalName">Modal title</span>
+                            </div>
+                            <button type="button" class="close modalClose" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>*@
+                    <div class="modal-body" style="padding: 0 !important">
+                        <div class="modal-head-explore" id="headExplore">
+                            <a href="#" id="TalentLink">
+                                <img src="~/template/img/jkt2.png" class="modal-img" id="modalImg" alt="Alternate Text" />
+                                <div class="head-eye">
+                                    <span class="modalName" id="modalName">Modal title</span>
+                                    <span style="color:rgba(255,255,255,0.75);"><label style="color:rgba(255,255,255,0.75);" id="views"></label> dilihat</span>
+                                </div>
+                            </a>
+                            <button type="button" class="close modalClose" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="embed-responsive embed-responsive-4by3 card-modal-top">
+                            <video class="embed-responsive-item" controls id="videoplayer">
+                                <source src="~/template/img/P6090053.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div id="myModal" class="modalImg">
+            <span class="closeImg">&times;</span>
+            <img class="modal-contentImg" id="img01">
+        </div>
+
+
+        <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Login</h5>
+                        <button type="button" class="close pull-right" data-dismiss="modal" aria-label="Close" onclick="javascript:history.back()">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body modal-login" style="padding: 35px;">
+                        <form>
+                            <div class="">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="con-login" style="padding:0;">
+
+                                            <div class="header-login" style="padding: 10px 10px;">
+                                                @*<button type="button" class="close login-close" aria-label="Close" onclick="javascript:window.location.href = '../Home/Index'">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>*@
+                                                <h3>Login ke akunmu</h3>
+                                                <h5>Login sekarang dan dapatkan penawaran menarik!</h5>
+                                            </div>
+                                            <div class="button-login m-t-20">
+                                                <form asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" }">
+                                                    <div class="form-row">
+
+                                                        @{
+                                                            var loginProviders = (await SignInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+                                                            if (loginProviders.Count == 0)
+                                                            {
+                                                                <div>
+                                                                    <p>
+                                                                        There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
+                                                                        for details on setting up this ASP.NET application to support logging in via external services.
+                                                                    </p>
+                                                                </div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <div class="text-center">
+                                                                    <p class="text-center font-italic">Login menggunakan akun media sosial</p>
+                                                                    <ul style="list-style:none" class="m-t-15">
+                                                                        @{ foreach (var provider in loginProviders)
+                                                                            {
+
+                                                                                if (provider.Name == "Google")
+                                                                                {
+                                                                                    <li>
+                                                                                        <div class="col text-center">
+                                                                                            <a href="@Url.Action("ExternalLogin","Account",new { returnUrl = "" , provider= "Google"  })" class="btn loginBtn loginBtn--google">
+                                                                                                Login menggunakan Gmail
+                                                                                            </a>
+                                                                                            @*<button onclick="location.href='@Url.Action("ExternalLogin","Account",new { provider= "Google", returnUrl = ""   })'" class="loginBtn loginBtn--google">
+                                                                                                    Daftar menggunakan Gmail
+                                                                                                </button>*@
+                                                                                        </div>
+                                                                                    </li>
+                                                                                }
+                                                                                else if (provider.Name == "Facebook")
+                                                                                {
+                                                                                    <li>
+                                                                                        <div class="col text-center">
+                                                                                            <a href="@Url.Action("ExternalLogin","Account",new { returnUrl = "" , provider= "Facebook"  })" class="btn loginBtn loginBtn--facebook">
+                                                                                                Login menggunakan Facebook
+                                                                                            </a>
+                                                                                            @*<button href="@Url.Action("ExternalLogin","Account",new { provider= "Facebook", returnUrl = "" , })" class="loginBtn loginBtn--facebook">
+                                                                                                    Daftar menggunakan Facebook
+                                                                                                </button>*@
+                                                                                        </div>
+                                                                                    </li>
+                                                                                }
+
+                                                                            }
+                                                                        }
+                                                                    </ul>
+                                                                </div>
+                                                            }
+                                                        }
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="form-login" style="width: 100%">
+                                                @*<a asp-controller="Account" asp-action="Signup" class="black-clr">Belum memiliki Akun? <b> Daftar disini</b></a>*@
+
+                                                <p class="text-center m-t-10 m-b-25 font-italic">atau login menggunakan akun Fameo-mu</p>
+
+                                                <form class="form-horizontal form-bordered " id="frm_Login">
+                                                    <div class="text-center">
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-12 col-md-12">
+                                                                @*<label class="form-check-label m-b-5" for="Email">Email</label>*@
+                                                                @*<input onchange="checkAvailEmailability()" type="text" name="" id="Email" value="@Model.Email" class="form-control" placeholder="Email" required />*@
+                                                                <input type="text" name="" id="HeaderUserName" class="form-control" aria-describedby="emailHelp" placeholder="Enter email/username/mobile phone no" required />
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-12 col-md-12">
+                                                                @*<label class="form-check-label m-b-5" for="Password">Password</label>*@
+                                                                <div class="togglepass">
+                                                                    <input type="password" name="" id="HeaderPassword" class="form-control" placeholder="Enter password" required autocomplete="new-password" />
+                                                                    <span toggle="#HeaderPassword" class="fa fa-fw fa-eye-slash field-icon toggle-password"></span>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-lg-12 col-md-12">
+                                                            <p class="text-left m-t-10 m-b-25">
+                                                                <input type="checkbox" checked id="chkRemember" /> Ingat Saya
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="register-buttons m-t-10 p-b-25">
+                                                        @*<button type="submit" class="btn btn-primary btn-block  btnprocess">Buat Akun<img src="/template/img/ic-proceed.png" class="ic-process"></button>*@
+                                                        <button type="submit" class="btn btnlogins" id="HeaderBtnLogin" style="text-transform:uppercase">Login</button>
+                                                        <a href="#" data-toggle="modal" data-target="#forgotpassmodal" class="text-center p-t-10" style="display:table; margin:auto; color:rgba(0,0,0,0.8);">Lupa Password ?</a>
+                                                        <br>
+                                                        <h5 class="fw-400">Belum punya akun bisa daftar <a href="@Url.Action("Onboarding","Account")">disini</a></h5>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal fade" id="loginModalOld" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Login</h5>
+                        <button type="button" class="close pull-right" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body modal-login" style="padding: 35px;">
+                        <img src="~/template/img/Jing_e 1.png" alt="Alternate Text" />
+
+                        <form>
+
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="HeaderUserName" aria-describedby="emailHelp" placeholder="Enter email or username">
+                            </div>
+                            <div class="form-group form-pass">
+
+                                <input type="password" class="form-control" id="HeaderPassword" placeholder="Password">
+                                <span toggle="#HeaderPassword" class="fa fa-fw fa-eye-slash field-icon toggle-password"></span>
+
+                            </div>
+
+
+
+
+                            <button type="button" class="btn btn-primary btn-login" id="HeaderBtnLogin" style="margin: auto;display: table; padding: 8px 25px;">Login</button>
+                            <br />
+                            <a href="#" data-toggle="modal" data-target="#forgotpassmodal" class="text-center p-t-10" style="display:table; margin:auto; color:rgba(0,0,0,0.8);">Lupa Password ?</a>
+
+                        </form>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="forgotpassmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5>Forgot Password</h5>
+                        <button type="button" class="close pull-right" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" style="padding: 35px;">
+                        <h3 class="text-center">Lupa Password</h3>
+                        <p class="text-center m-b-20">Kami akan mengirim email untuk mereset password anda</p>
+                        <form>
+                            <div class="form-group">
+                                <input type="email" class="form-control" id="HeaderEmail" aria-describedby="emailHelp" placeholder="Enter email">
+                                <input type="hidden" name="name" id="HeaderisValidEmail" />
+                                <span id="HeadermessageEmail"></span>
+                            </div>
+
+                            <button type="button" onclick="HeadercheckAvailEmailability()" class="btn btn-primary btn-login" style="margin: auto;display: table; padding: 8px 25px;">Submit</button>
+                        </form>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="loadingSign" style="display: none">
+            <img src="~/template/img/loadingpink.gif" alt="Alternate Text" />
+        </div>
+
+
+    </div>
+    <!-- ================== BEGIN BASE JS ================== -->
+    <script src="~/template/plugins/jquery/jquery-3.3.1.min.js"></script>
+    <script src="~/template/plugins/jquery-ui/jquery-ui.min.js"></script>
+    <script src="~/template/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/template/plugins/dropzone/dropzone.js"></script>
+    <!--[if lt IE 9]>
+        <script src="crossbrowserjs/html5shiv.js"></script>
+        <script src="crossbrowserjs/respond.min.js"></script>
+        <script src="crossbrowserjs/excanvas.min.js"></script>
+    <![endif]-->
+    <script src="~/template/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="~/template/plugins/js-cookie/js.cookie.js"></script>
+    <script src="~/template/js/default.min.js"></script>
+    <script src="~/template/js/apps.min.js"></script>
+    <script src="~/template/js/front.js"></script>
+    <script src="~/template/js/better-rating.js"></script>
+    <script src="~/template/plugins/OwlCarousel/dist/owl.carousel.min.js"></script>
+    <script src="~/template/plugins/d3/d3.min.js"></script>
+    <script src="~/template/plugins/nvd3/build/nv.d3.js"></script>
+    <script src="~/assets/plugins/gritter/js/jquery.gritter.js"></script>
+    <script src="~/template/plugins/bootstrap/js/bootstrap.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+    <script src="~/template/plugins/bootstrap-select/i18n/defaults-id_ID.min.js"></script>
+    <script src="~/template/plugins/jquery-steps/jquery.steps.js"></script>
+    <script src="~/template/plugins/bootstrap-sweetalert/sweetalert.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@0.2.0/dist/confetti.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.js"></script>
+    <script src="~/assets/selectpicker/bootstrap-select.min.js"></script>
+    <script src="https://unpkg.com/infinite-scroll@3/dist/infinite-scroll.pkgd.js"></script>
+    <script src="~/template/js/jquery.pjInfiniteScroll.js"></script>
+    <script src="~/assets/autonumeric/AutoNumeric.js"></script>
+
+    <!-- ================== END BASE JS ================== -->
+    @*<script src='https://hammerjs.github.io/dist/hammer.min.js'></script>*@
+    <script src="~/js/hammer.min.js"></script>
+    <script src="~/sw.js"></script>
+    <script src="~/js/CreateDevice.js"></script>
+    <script type="text/javascript">
+        var applicationServerPublicKey = 'BAVga6_CDUnXjegxtgYKT-kgviHOUGQc877x-8c1usw_QoFt2jk_zyI68elT6Yn1kTM9kFe7FiMWbyyIwUiCP84';
+        const countdown = document.getElementById('my-countdown');
+        const endDate = new Date(countdown.dataset.endDate);
+        const endTimestamp = endDate.getTime();
+
+        window.setInterval(() => {
+            let nowTimestamp = Date.now();
+            let deltaT = Math.abs(endTimestamp - nowTimestamp) / 1000;
+
+            let days = 0;
+            let hours = 0;
+            let minutes = 0;
+
+
+            if (nowTimestamp < endTimestamp) {
+                days = Math.floor(deltaT / 86400);
+                deltaT -= days * 86400;
+                hours = Math.floor(deltaT / 3600) % 24;
+                deltaT -= hours * 3600;
+                minutes = Math.floor(deltaT / 60) % 60;
+                deltaT -= minutes * 60;
+
+            }
+
+            countdown.children[0].innerHTML = days;
+            countdown.children[1].innerHTML = hours;
+            countdown.children[2].innerHTML = minutes;
+
+        }, 1000);
+    </script>
+    <script type="text/javascript">
+
+        //'use strict';
+
+        //var tinderContainer = document.querySelector('.tinder');
+        //var allCards = document.querySelectorAll('.tinder--card');
+        //var nope = document.getElementById('nope');
+        //var love = document.getElementById('love');
+
+        //function initCards(card, index) {
+        //    var newCards = document.querySelectorAll('.tinder--card:not(.removed)');
+
+        //    newCards.forEach(function (card, index) {
+        //        card.style.zIndex = allCards.length - index;
+        //        card.style.transform = 'scale(' + (20 - index) / 20 + ') translateY(-' + 30 * index + 'px)';
+        //        card.style.opacity = (10 - index) / 10;
+        //    });
+
+        //    tinderContainer.classList.add('loaded');
+        //}
+
+        //initCards();
+
+        //allCards.forEach(function (el) {
+        //    var hammertime = new Hammer(el);
+
+        //    hammertime.on('pan', function (event) {
+        //        el.classList.add('moving');
+        //    });
+
+        //    hammertime.on('pan', function (event) {
+        //        if (event.deltaX === 0) return;
+        //        if (event.center.x === 0 && event.center.y === 0) return;
+
+        //        tinderContainer.classList.toggle('tinder_love', event.deltaX > 0);
+        //        tinderContainer.classList.toggle('tinder_nope', event.deltaX < 0);
+
+        //        var xMulti = event.deltaX * 0.03;
+        //        var yMulti = event.deltaY / 80;
+        //        var rotate = xMulti * yMulti;
+
+        //        event.target.style.transform = 'translate(' + event.deltaX + 'px, ' + event.deltaY + 'px) rotate(' + rotate + 'deg)';
+        //    });
+
+        //    hammertime.on('panend', function (event) {
+        //        el.classList.remove('moving');
+        //        tinderContainer.classList.remove('tinder_love');
+        //        tinderContainer.classList.remove('tinder_nope');
+
+        //        var moveOutWidth = document.body.clientWidth;
+        //        var keep = Math.abs(event.deltaX) < 80 || Math.abs(event.velocityX) < 0.5;
+
+        //        event.target.classList.toggle('removed', !keep);
+
+        //        if (keep) {
+        //            event.target.style.transform = '';
+        //        } else {
+        //            var endX = Math.max(Math.abs(event.velocityX) * moveOutWidth, moveOutWidth);
+        //            var toX = event.deltaX > 0 ? endX : -endX;
+        //            var endY = Math.abs(event.velocityY) * moveOutWidth;
+        //            var toY = event.deltaY > 0 ? endY : -endY;
+        //            var xMulti = event.deltaX * 0.03;
+        //            var yMulti = event.deltaY / 80;
+        //            var rotate = xMulti * yMulti;
+
+        //            event.target.style.transform = 'translate(' + toX + 'px, ' + (toY + event.deltaY) + 'px) rotate(' + rotate + 'deg)';
+        //            initCards();
+        //        }
+        //    });
+        //});
+
+        //function createButtonListener(love) {
+        //    return function (event) {
+        //        var cards = document.querySelectorAll('.tinder--card:not(.removed)');
+        //        var moveOutWidth = document.body.clientWidth * 1.5;
+
+        //        if (!cards.length) return false;
+
+        //        var card = cards[0];
+
+        //        card.classList.add('removed');
+
+        //        if (love) {
+        //            card.style.transform = 'translate(' + moveOutWidth + 'px, -100px) rotate(-30deg)';
+        //        } else {
+        //            card.style.transform = 'translate(-' + moveOutWidth + 'px, -100px) rotate(30deg)';
+        //        }
+
+        //        initCards();
+
+        //        event.preventDefault();
+        //    };
+        //}
+
+        //var nopeListener = createButtonListener(false);
+        //var loveListener = createButtonListener(true);
+
+        //nope.addEventListener('click', nopeListener);
+        //love.addEventListener('click', loveListener);
+
+
+
+    </script>
+    <script>
+        var myVar;
+
+        $(".toggle-password").click(function () {
+
+            $(this).toggleClass("fa-eye-slash fa-eye");
+            var input = $($(this).attr("toggle"));
+            if (input.attr("type") == "password") {
+                input.attr("type", "text");
+            } else {
+                input.attr("type", "password");
+            }
+        });
+
+        function myFunction() {
+            myVar = setTimeout(showPage, 3000);
+           // window.location.href = "@Url.Action("index","Home")";
+        }
+
+        function showPage() {
+            document.getElementById("loader").style.display = "none";
+
+        }
+
+          function HeadercheckAvailEmailability() {
+            var email = $("#HeaderEmail").val();
+
+            var url = '@Url.Action("SendEmailForgetPassword", "Account")';
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: {
+                    email: email
+                },
+                beforeSend: function () {
+                    //$("#spinner").show();
+                    $(".loadingSign").show();
+                },
+                complete: function () {
+                    $(".loadingSign").hide();
+                },
+                success: function (data) {
+                    var message = $("#HeadermessageEmail");
+                    if (data == true) {
+
+                        //message.css("color", "green");
+                        //message.html("Email is available");
+                        //$("#isValidEmail").val(1);
+                          swal({
+                                title: "Success",
+                                text: "Email Sudah Terkirim",
+                                icon: "success",
+                          }).then(function () {
+                              $("#forgotpassmodal").modal('hide');
+                                @*window.location.href = "@Url.Action("Profile", "Account")";*@
+                            });
+                    } else {
+                        //Email not available.
+                        message.css("color", "red");
+                        message.html("Email is NOT available");
+                        $("#isValidEmail").val(0);
+                    }
+                }
+            })
+        }
+    </script>
+    <script>
+        $(document).ready(function () {
+            var HdnUserId = $("#hdnUserId").val();
+            var HdnRoleId = $("#hdnRoleId").val();
+            console.log("Role",HdnRoleId);
+            $("select").selectpicker({ liveSearch: true });
+
+            $.fn.digits = function () {
+                return this.each(function () {
+                    //$(this).text().toFixed(2);
+                    //var roundtwonumber = parseFloat($(this).text()).toFixed(2);
+                    var roundtwonumber = parseFloat($(this).text()).toFixed(0);
+                    $(this).text(roundtwonumber.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"));
+                })
+            }
+
+            $("label.amountlines").digits();
+
+            var url = window.location.pathname.split("/");
+
+            $("#ProfileMenu").removeClass("active");
+            $("#ActivityMenu").removeClass("active");
+            $("#ProfileMenu").removeClass("active");
+            $("#ExploreMenu").removeClass("active");
+            $("#WishlistMenu").removeClass("active");
+
+
+
+            var ControllerName = url[1];
+            var ControllerName = url[1];
+
+            console.log("url2",url[2]);
+            console.log(ControllerName);
+            if (ControllerName == "Account") {
+                $("#ProfileMenu").addClass("active");
+            }
+            else if (ControllerName == "Activity") {
+                $("#ActivityMenu").addClass("active");
+            }
+            else if (ControllerName == "Home") {
+                $("#HomeMenu").addClass("active");
+            }
+            else if (ControllerName== "Talent") {
+                $("#ExploreMenu").addClass("active");
+            }
+            else if (ControllerName == "Wishlist") {
+                $("#WishlistMenu").addClass("active");
+            }
+
+            //alert(ControllerName);
+           // if (ControllerName)
+
+            //App.init();
+            //ChartNvd3.init();
+            //$('#better-rating-form').betterRating();
+            //$('.splash-screen').fadeOut(3000);
+            //$(".owl-carousel").owlCarousel({
+            //    dots: false
+            //});
+            if (HdnUserId == "") {
+                @*window.location.href = '@Url.Action("Onboarding", "Account")';*@
+                App.init();
+                $("#HeaderLoginForm").show();
+                $("#ProfileMenu").show();
+                $("#ActivityMenu").hide();
+                //$("#WishlistMenu").hide();
+                //$("#ProfileMenu").hide();
+                //$("#ActivityMenu").hide();
+
+            }
+            else {
+                App.init();
+                ChartNvd3.init();
+                $("#HeaderLoginForm").hide();
+                $("#ProfileMenu").show();
+                $("#WishlistMenu").show();
+
+                $('#better-rating-form').betterRating();
+
+                if (HdnRoleId != "3") {
+                    document.getElementById("ActivityMenu").style.display = "none";
+                }
+                else if (HdnRoleId == "3") {
+                    document.getElementById("ActivityMenu").style.display = "inline-block";
+                }
+                //$('.splash-screen').fadeOut(3000);
+                //$(".owl-carousel > kategori").owlCarousel({
+                //    dots: false
+                //});
+
+                $('.owl-tutor').owlCarousel({
+                     loop: true,
+                     margin: 10,
+                     responsiveClass: true,
+                     items: 1,
+                     dots: true,
+                    center: true,
+                     nav: true
+                })
+
+                $(".kategori").owlCarousel({
+                    dots: false,
+                });
+                bsCustomFileInput.init()
+                $("#file_upload").dropzone({ url: "/file/post" });
+                $('select').selectpicker();
+
+            }
+
+            $('.createuser').keypress(function (e) {
+            });
+
+
+
+            $("#HeaderBtnLogin").click(function (e) {
+                var username = $("#HeaderUserName").val();
+                var password = $("#HeaderPassword").val();
+
+                e.preventDefault();
+                var jsonRequest = {
+                    UserName: username,
+                    Password: password,
+                };
+
+                var url = '@Url.Action("Login","AdmAccount")';
+
+
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    data: {model:jsonRequest},
+                    success: function (data) {
+
+                        if (data.user == "Valid") {
+
+                            $.gritter.add({
+                                title: 'Success !',
+                                text: 'Success !'
+                            });
+
+                            if (data.roleId ==1)
+                            {
+                                 window.location.href = "@Url.Action("DashboardDataStudio", "AdmHome")";
+                            }
+                            else
+                            {
+                                window.location.reload();
+                                if (data.roleId == 3) {
+                                    $("#ActivityMenu").show();
+                                }
+                                else {
+                                    $("#ActivityMenu").hide();
+                                }
+                            }
+
+
+                        }
+                        else if (data.user == "NotValid") {
+
+                            $.gritter.add({
+                                title: 'Not Valid !',
+                                text: 'User is not Valid !'
+                            });
+
+                        }
+                        else {
+                            return false;
+                        }
+
+                    },
+                    error: function (data) {
+                        alert("no");
+                    }
+                });
+
+
+            });
+
+
+
+
+        });
+    </script>
+    <script>
+        $("document").ready(function () {
+
+
+            // Define the menu we are working with
+            var menu = $('#myHeader');
+
+            // Get the menus current offset
+            var origOffsetY = menu.offset().top;
+
+            /**
+             * scroll
+             * Perform our menu mod
+             */
+            function scroll() {
+
+                // Check the menus offset.
+                if ($(window).scrollTop() > origOffsetY + 70) {
+
+                    //If it is indeed beyond the offset, affix it to the top.
+                    menu.addClass('fixed-top');
+
+                } else {
+
+                    // Otherwise, un affix it.
+                    menu.removeClass('fixed-top');
+
+                }
+            }
+
+            // Anytime the document is scrolled act on it
+            document.onscroll = scroll;
+        });
+
+    </script>
+    @*<script type="text/javascript">
+                $("document").ready(function () {
+                    $("#div-selamat").hide();
+                });
+
+            function firework() {
+                $("#div-selamat").show();
+
+                var end = Date.now() + (3 * 1000);
+
+                //var interval = setInterval(function () {
+                //    if (Date.now() > end) {
+                //        $("#div-selamat").hide();
+                //        return clearInterval(interval);
+                //    }
+
+                    confetti({
+                        startVelocity: 30,
+                        spread: 360,
+                        ticks: 60,
+                        origin: {
+                            x: Math.random(),
+                            // since they fall down, start a bit higher than random
+                            y: Math.random() - 0.2
+                        }
+                    });
+                }, 200);
+            }
+
+        </script>*@
+
+    @RenderSection("scripts", required: false)
+
+</body>
+</html>
